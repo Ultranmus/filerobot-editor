@@ -1,9 +1,10 @@
 'use client'
 import dynamic from 'next/dynamic';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+// import { StyleSheetManager } from 'styled-components';
+// import isPropValid from '@emotion/is-prop-valid';
 
-import { StyleSheetManager } from 'styled-components';
-import isPropValid from '@emotion/is-prop-valid';
+
 
 const FilerobotImageEditor = dynamic(
   () => import('react-filerobot-image-editor'),
@@ -20,25 +21,6 @@ export default function FilerobotImageEditorPage() {
   const closeImgEditor = () => {
     setIsImgEditorShown(false);
   };
-
-  const [editorProps, setEditorProps] = useState<null | {
-    TABS: any;
-    TOOLS: any;
-  }>(null);
-
-
-  useEffect(() => {
-    const loadEditor = async () => {
-      const { TABS, TOOLS } = await import('react-filerobot-image-editor');
-      setEditorProps({ TABS, TOOLS });
-    };
-
-    loadEditor();
-  }, []);
-
-  if (!editorProps) return null;
-
-  const { TABS, TOOLS } = editorProps;
 
   return (
     <div className='h-screen flex flex-col gap-2'>
@@ -110,3 +92,39 @@ export default function FilerobotImageEditorPage() {
 
   );
 }
+
+export const TABS = {
+  FINETUNE: 'Finetune',
+  FILTERS: 'Filters',
+  ADJUST: 'Adjust',
+  WATERMARK: 'Watermark',
+  ANNOTATE: 'Annotate',
+  RESIZE: 'Resize',
+} as const;
+
+export const TOOLS = {
+  CROP: 'Crop',
+  ROTATE: 'Rotate',
+  FLIP_X: 'Flip_X',
+  FLIP_Y: 'Flip_Y',
+  BRIGHTNESS: 'Brightness',
+  CONTRAST: 'Contrast',
+  HSV: 'HueSaturationValue',
+  WARMTH: 'Warmth',
+  BLUR: 'Blur',
+  THRESHOLD: 'Threshold',
+  POSTERIZE: 'Posterize',
+  PIXELATE: 'Pixelate',
+  NOISE: 'Noise',
+  FILTERS: 'Filters',
+  RECT: 'Rect',
+  ELLIPSE: 'Ellipse',
+  POLYGON: 'Polygon',
+  TEXT: 'Text',
+  LINE: 'Line',
+  IMAGE: 'Image',
+  ARROW: 'Arrow',
+  WATERMARK: 'Watermark',
+  PEN: 'Pen',
+  RESIZE: 'Resize',
+} as const;
