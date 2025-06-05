@@ -13,6 +13,8 @@ const FilerobotImageEditor = dynamic(
 
 export default function FilerobotImageEditorPage() {
   const [isImgEditorShown, setIsImgEditorShown] = useState(false);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [image, setImage] = useState<string | undefined>();
 
   const openImgEditor = () => {
     setIsImgEditorShown(true);
@@ -22,71 +24,94 @@ export default function FilerobotImageEditorPage() {
     setIsImgEditorShown(false);
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageSrc(reader.result as string);
+        openImgEditor();
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className='h-screen flex flex-col gap-2'>
 
       <button onClick={openImgEditor}>Open Filerobot image editor</button>
-      {/* <StyleSheetManager shouldForwardProp={isPropValid}> */}
-      {isImgEditorShown && (
-        <FilerobotImageEditor
-          source="https://scaleflex.airstore.io/demo/stephen-walker-unsplash.jpg"
-          onSave={(editedImageObject, designState) => console.log('saved', editedImageObject, designState)}
-          onClose={closeImgEditor}
-          annotationsCommon={{
-            fill: '#000000',
-          }}
-          avoidChangesNotSavedAlertOnLeave={true}
-          Text={{ text: 'KUMBA...' }}
-          Rotate={{ angle: 90, componentType: 'slider' }}
-          Crop={{
-            presetsItems: [
-              {
-                titleKey: 'classicTv',
-                descriptionKey: '4:3',
-                ratio: 4 / 3,
-                // icon: CropClassicTv, // optional, CropClassicTv is a React Function component. Possible (React Function component, string or HTML Element)
-              },
-              {
-                titleKey: 'cinemascope',
-                descriptionKey: '21:9',
-                ratio: 21 / 9,
-                // icon: CropCinemaScope, // optional, CropCinemaScope is a React Function component.  Possible (React Function component, string or HTML Element)
-              },
-            ],
-            presetsFolders: [
-              {
-                titleKey: 'socialMedia', // will be translated into Social Media as backend contains this translation key
-
-                // icon: Social, // optional, Social is a React Function component. Possible (React Function component, string or HTML Element)
-                groups: [
+      {
+        !isImgEditorShown ?
+          <>
+            <input type="file" accept="image/*" onChange={handleFileChange} />
+            {
+              image &&
+              <img src={image} className='h-80 w-80 object-center object-contain' />
+            }
+          </>
+          :
+          // <StyleSheetManager shouldForwardProp={isPropValid}> 
+          imageSrc &&
+          (
+            <FilerobotImageEditor
+              source={imageSrc}
+              onSave={(editedImageObject, designState) => setImage(editedImageObject.imageBase64)}
+              onClose={closeImgEditor}
+              annotationsCommon={{
+                fill: '#000000',
+              }}
+              avoidChangesNotSavedAlertOnLeave={true}
+              Text={{ text: 'KUMBA...' }}
+              Rotate={{ angle: 90, componentType: 'slider' }}
+              Crop={{
+                presetsItems: [
                   {
-                    titleKey: 'facebook',
-                    items: [
+                    titleKey: 'classicTv',
+                    descriptionKey: '4:3',
+                    ratio: 4 / 3,
+                    // icon: CropClassicTv, // optional, CropClassicTv is a React Function component. Possible (React Function component, string or HTML Element)
+                  },
+                  {
+                    titleKey: 'cinemascope',
+                    descriptionKey: '21:9',
+                    ratio: 21 / 9,
+                    // icon: CropCinemaScope, // optional, CropCinemaScope is a React Function component.  Possible (React Function component, string or HTML Element)
+                  },
+                ],
+                presetsFolders: [
+                  {
+                    titleKey: 'socialMedia', // will be translated into Social Media as backend contains this translation key
+
+                    // icon: Social, // optional, Social is a React Function component. Possible (React Function component, string or HTML Element)
+                    groups: [
                       {
-                        titleKey: 'profile',
-                        width: 180,
-                        height: 180,
-                        descriptionKey: 'fbProfileSize',
-                      },
-                      {
-                        titleKey: 'coverPhoto',
-                        width: 820,
-                        height: 312,
-                        descriptionKey: 'fbCoverPhotoSize',
+                        titleKey: 'facebook',
+                        items: [
+                          {
+                            titleKey: 'profile',
+                            width: 180,
+                            height: 180,
+                            descriptionKey: 'fbProfileSize',
+                          },
+                          {
+                            titleKey: 'coverPhoto',
+                            width: 820,
+                            height: 312,
+                            descriptionKey: 'fbCoverPhotoSize',
+                          },
+                        ],
                       },
                     ],
                   },
                 ],
-              },
-            ],
-          }}
-          tabsIds={[TABS.ADJUST, TABS.ANNOTATE, TABS.WATERMARK, TABS.FILTERS, TABS.FINETUNE, TABS.RESIZE]} // or {['Adjust', 'Annotate', 'Watermark']}
-          defaultTabId={TABS.ANNOTATE} // or 'Annotate'
-          defaultToolId={TOOLS.TEXT} // or 'Text'
-          savingPixelRatio={4}
-          previewPixelRatio={window.devicePixelRatio}
-          disableSaveIfNoChanges={true} />
-      )}
+              }}
+              tabsIds={[TABS.ADJUST, TABS.ANNOTATE, TABS.WATERMARK, TABS.FILTERS, TABS.FINETUNE, TABS.RESIZE]} // or {['Adjust', 'Annotate', 'Watermark']}
+              defaultTabId={TABS.ANNOTATE} // or 'Annotate'
+              defaultToolId={TOOLS.TEXT} // or 'Text'
+              savingPixelRatio={4}
+              previewPixelRatio={window.devicePixelRatio}
+              disableSaveIfNoChanges={true} />
+          )}
       {/* </StyleSheetManager> */}
     </div>
 
