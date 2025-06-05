@@ -55,7 +55,7 @@ export default function FilerobotImageEditorPage() {
           (
             <FilerobotImageEditor
               source={imageSrc}
-              onSave={(editedImageObject, designState) => setImage(editedImageObject.imageBase64)}
+              onSave={(editedImageObject) => setImage(editedImageObject.imageBase64)}
               onClose={closeImgEditor}
               annotationsCommon={{
                 fill: '#000000',
