@@ -4,14 +4,12 @@ import React, { useState } from 'react';
 // import { StyleSheetManager } from 'styled-components';
 // import isPropValid from '@emotion/is-prop-valid';
 
-
-
 const FilerobotImageEditor = dynamic(
   () => import('react-filerobot-image-editor'),
   { ssr: false }
 );
 
-export default function FilerobotImageEditorPage() {
+export default function ImageEditorPage() {
   const [isImgEditorShown, setIsImgEditorShown] = useState(false);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [image, setImage] = useState<string | undefined>();
