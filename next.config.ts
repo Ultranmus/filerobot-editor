@@ -11,25 +11,25 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  transpilePackages: [
-    'react-filerobot-image-editor',
-    'filerobot-image-editor',
-    'konva',
-  ],
-  experimental: { esmExternals: 'loose', },
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      // Avoid bundling canvas on server – Konva uses it in SSR context
-      config.externals = [
-        ...(config.externals || []),
-        {
-          canvas: 'commonjs canvas',
-        },
-      ];
-    }
+  // transpilePackages: [
+  //   'react-filerobot-image-editor',
+  //   'filerobot-image-editor',
+  //   'konva',
+  // ],
+  // experimental: { esmExternals: 'loose', },
+  // webpack: (config, { isServer }) => {
+  //   if (isServer) {
+  //     // Avoid bundling canvas on server – Konva uses it in SSR context
+  //     config.externals = [
+  //       ...(config.externals || []),
+  //       {
+  //         canvas: 'commonjs canvas',
+  //       },
+  //     ];
+  //   }
 
-    return config;
-  },
+  //   return config;
+  // },
 };
 
 export default nextConfig;

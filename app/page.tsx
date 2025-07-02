@@ -1,8 +1,8 @@
 'use client'
 import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
-// import { StyleSheetManager } from 'styled-components';
-// import isPropValid from '@emotion/is-prop-valid';
+// import styled, { StyleSheetManager } from 'styled-components';
+import isPropValid from '@emotion/is-prop-valid';
 
 
 
@@ -50,9 +50,16 @@ export default function FilerobotImageEditorPage() {
             }
           </>
           :
-          // <StyleSheetManager shouldForwardProp={isPropValid}> 
+
           imageSrc &&
           (
+            // <StyleSheetManager shouldForwardProp={propName => isPropValid(propName)}>
+            //   <SafeWrapper
+            //   $showTabsDrawer
+            //   $isPhoneScreen
+            //   $noMargin
+            //   $active
+            // > 
             <FilerobotImageEditor
               source={imageSrc}
               onSave={(editedImageObject) => setImage(editedImageObject.imageBase64)}
@@ -111,12 +118,24 @@ export default function FilerobotImageEditorPage() {
               savingPixelRatio={4}
               previewPixelRatio={window.devicePixelRatio}
               disableSaveIfNoChanges={true} />
+            // </SafeWrapper>
+            // </StyleSheetManager>
           )}
-      {/* </StyleSheetManager> */}
     </div>
 
   );
 }
+
+// const SafeWrapper = styled.div<{
+//   $showTabsDrawer?: boolean;
+//   $isPhoneScreen?: boolean;
+//   $noMargin?: boolean;
+//   $active?: boolean;
+// }>`
+//   margin: ${({ $noMargin }) => ($noMargin ? '0' : '1rem')};
+//   display: ${({ $showTabsDrawer }) => ($showTabsDrawer ? 'block' : 'none')};
+//   /* add other styles using transient props */
+// `;
 
 export const TABS = {
   FINETUNE: 'Finetune',
